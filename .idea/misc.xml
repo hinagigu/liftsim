@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Black">
+    <option name="executionMode" value="BINARY" />
+    <option name="pathToExecutable" value="D:\Learning\Anaconda\Install\Scripts\black.exe" />
+    <option name="sdkUUID" value="082d5af2-f792-42c2-81b4-65d14dc04b56" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="py311" project-jdk-type="Python SDK" />
+</project>
