@@ -1,44 +1,24 @@
 import gym
+import gymnasium
 import metagym.liftsim
 import numpy as np
+import torch
 from metagym.liftsim.environment.env import LiftSim
-from metagym.liftsim.environment.mansion.utils import state_transform
+from metagym.liftsim.environment.mansion.utils import state_transform,action_to_list,flatten_state
 from gymnasium.wrappers.compatibility import EnvCompatibility
-env = LiftSim()
-# env = gym.make('liftsim-v0')
-env.seed(1998)
+# env = LiftSim()
+env = gymnasium.make('liftsim-v0')
 # iteration = env.iterations
-state = env.reset()
-action = [0, 1, 0, 1, 0, 1, 0, 1]
-# q,k,v = state_transform(state)
-# print(type(q))
-# print(len(q))
-# print(q)
-dict,q,k,v = state_transform(state)
-# for key in dict['elevator_states']:
-#     print(key,env.observation_space['elevator_states'][key].contains(dict['elevator_states'][key]))
-# s = dict['elevator_states']['ReservedTargetFloors']
-# print(s)
-# p = env.observation_space['elevator_states']['ReservedTargetFloors'].sample()
-# ll = np.zeros_like(p)
-# print(s.dtype)
-# print(ll.dtype)
-# print(p.dtype)
+state,info= env.reset()
 
-
-# for i in q:
-
-#     print(env.elevator_space.contains(i))
-# print(q[0])
-# for key in env.elevator_space:
-#     print(key,env.elevator_space[key].contains(q[0][key]))
-
-# print(env.elevator_space.sample())
-
-# for i in range(10000):
-#     next_state, reward, _, _ = env.step(action)
-#     if len(next_state.RequiringUpwardFloors) or len(next_state.RequiringDownwardFloors) >0:
-#         print(next_state.RequiringUpwardFloors,next_state.RequiringDownwardFloors)
-#     env.render()
-    # print(env.get_mansion().get_generator().generate_person())
-#     env.render()
+# action = [10, 1, 10, 1, 10, 1, 5, 1]
+# q = env.action_space.sample()
+# print(action_to_list(q))
+for i in range(100):
+    action = env.action_space.sample()
+    action = action_to_list(action)
+    next_state, reward, terminated,truncated,info = env.step(action)
+    print(env.observation_space.contains(next_state),reward)
+    # for key in next_state['elevator_states']:
+    #     if env.observation_space['elevator_states'][key].contains(next_state['elevator_states'][key]) == False:
+    #         print(key,env.observation_space['elevator_states'][key].sample().dtype,next_state['elevator_states'][key].dtype)

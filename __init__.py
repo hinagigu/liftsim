@@ -14,7 +14,8 @@
 
 import os
 from metagym.liftsim.environment import *
-from gym.envs.registration import register
+# from gym.envs.registration import register
+from gymnasium.envs.registration import register
 
 register(
     id='liftsim-v0',

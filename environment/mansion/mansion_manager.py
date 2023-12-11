@@ -108,8 +108,6 @@ class MansionManager(object):
         for i in range(self._elevator_number):
             state_queue.append(self._elevators[i].state)
         return MansionState(state_queue, upward_req, downward_req)
-    def get_generator(self):
-        return self._person_generator
 
     def run_mansion(self, actions):
         """

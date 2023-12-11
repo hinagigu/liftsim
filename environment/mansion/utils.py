@@ -19,7 +19,7 @@
 import sys
 import time
 import collections
-
+import torch
 import numpy as np
 
 # Average Entering and Exiting Time of a person
@@ -229,17 +229,49 @@ def state_transform(mansion_state):
             targets[target-1] = 1
         dict_list.append(ElevatorStates[elevator_num]._asdict())
         dict_list[elevator_num]['ReservedTargetFloors'] = targets
-        dict_list[elevator_num]['MaximumFloor'] = np.array([dict_list[elevator_num]['MaximumFloor']],dtype=np.float32)
+        dict_list[elevator_num]['MaximumFloor'] = np.int8(dict_list[elevator_num]['MaximumFloor'])
         dict_list[elevator_num]['MaximumLoad'] = np.array([dict_list[elevator_num]['MaximumLoad']],dtype=np.float32)
         dict_list[elevator_num]['DoorState'] = np.array([dict_list[elevator_num]['DoorState']],dtype=np.float32)
         dict_list[elevator_num]['MaximumSpeed'] = np.array([dict_list[elevator_num]['MaximumSpeed']],dtype=np.float32)
         dict_list[elevator_num]['OverloadedAlarm'] = np.array([dict_list[elevator_num]['OverloadedAlarm']],dtype=np.float32)
         dict_list[elevator_num]['Velocity'] = np.array([dict_list[elevator_num]['Velocity']],dtype=np.float32)
         dict_list[elevator_num]['LoadWeight'] = np.array([dict_list[elevator_num]['LoadWeight']],dtype=np.float32)
-        dict_list[elevator_num]['Floor'] = int(dict_list[elevator_num]['Floor'])
-        dict_list[elevator_num]['MaximumFloor'] = int(dict_list[elevator_num]['MaximumFloor'])
+        dict_list[elevator_num]['Floor'] = np.int8(dict_list[elevator_num]['Floor'])
+        dict_list[elevator_num]['DispatchTargetDirection'] = np.int8(dict_list[elevator_num]['DispatchTargetDirection'])
 
     ElevatorStates = {key: np.stack([d[key] for d in dict_list]) for key in dict_list[0].keys()}
     return {"elevator_states": ElevatorStates,
             "upward_requests": Upwards,
-            "downward_requests": Downwards},dict_list,Upwards,Downwards
+            "downward_requests": Downwards}
+
+
+def action_to_list(actions):
+    flattened_list = []
+    if isinstance(actions, np.ndarray):
+        flattened_list = actions.flatten().tolist()
+    elif isinstance(actions, list):
+        flattened_list = [item for sublist in actions for item in sublist]
+    elif isinstance(actions, torch.Tensor):
+        actions_np = actions.numpy()
+        flattened_list = actions_np.flatten().tolist()
+    return flattened_list
+
+
+def flatten_state(state):
+    elevator_states = state["elevator_states"]
+    upward_requests = state["upward_requests"]
+    downward_requests = state["downward_requests"]
+
+    # 遍历每个电梯的状态,flatten并拼接
+    flatten_elts = []
+    for key, value in elevator_states.items():
+        v = np.array(value).flatten()
+        flatten_elts.append(v)
+
+    # 拼接 上行请求、下行请求
+    flatten_elts.append(np.array(upward_requests).flatten())
+    flatten_elts.append(np.array(downward_requests).flatten())
+
+    # 拼接最终结果
+    flatten_state = np.concatenate(flatten_elts)
+    return flatten_state
