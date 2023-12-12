@@ -1,6 +1,7 @@
 from collections import defaultdict
 import metagym.liftsim
 import matplotlib.pyplot as plt
+import numpy as np
 import torch
 from tensordict.nn import TensorDictModule
 from tensordict.nn.distributions import NormalParamExtractor
@@ -23,6 +24,9 @@ from torchrl.modules import ProbabilisticActor, TanhNormal, ValueOperator
 from torchrl.objectives import ClipPPOLoss
 from torchrl.objectives.value import GAE
 from tqdm import tqdm
+from gymnasium.spaces import Dict,Discrete,MultiDiscrete,MultiBinary,Sequence,Tuple,Box
+from gymnasium.spaces.utils import flatten_space,flatten
+
 
 device = "cpu" if not torch.has_cuda else "cuda:0"
 num_cells = 256  # number of cells in each layer i.e. output dim.
@@ -45,8 +49,6 @@ sub_batch_size = 64  # cardinality of the sub-samples gathered from the current 
 当所有的子集都用于训练一次后，我们就完成了一个epoch。这个过程会重复进行，直到满足一定的训练周期或者其它早停条件。
 这种做法的好处是，它可以有效地利用内存，
 避免一次性加载过大的数据集导致内存不足的问题。同时，通过调整sub_batch_size的大小，我们可以控制每次训练所使用的数据量，从而更好地控制训练过程。
-
-
 '''
 num_epochs = 10 # 总共10个epoch
 
