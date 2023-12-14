@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="80863bc2-5d6f-48e0-afd4-f1200f2762dd" name="lift">
+        <fileTransfer rootFolder="/home/hao" accessType="SFTP" host="210.38.224.111" port="22" sshConfigId="3bd00817-4c5a-4661-b1f5-27879f837a88" sshConfig="hao@210.38.224.111:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

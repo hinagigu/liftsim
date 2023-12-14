@@ -15,13 +15,15 @@ from typing import Optional,Any,Union,Dict
 import gymnasium as gym
 from metagym import liftsim
 from metagym.liftsim.environment.mansion.utils import state_transform,action_to_list,flatten_state
+from metagym.liftsim.dist_fn.dict_fn import ele_dict
 import numpy as np
 import torch
 import torch.nn as nn
+
 single = gym.make('liftsim-v0')
 
 env_nums = 2
-env = DummyVectorEnv([lambda : gym.make('liftsim-v0') for i in range(2)])
+env = DummyVectorEnv([lambda : gym.make('liftsim-v0') for i in range(1)])
 
 
 class my_random(Policy.BasePolicy):
@@ -51,7 +53,7 @@ class my_random(Policy.BasePolicy):
         # action_len = len(action)
         return action
 
-def process_fn(**kwargs)->Batch:
+def preprocess_fn(**kwargs)->Batch:
     if(kwargs.__contains__('obs')):
         kwargs['obs']=[flatten_state(_) for _ in kwargs['obs']]
     if(kwargs.__contains__('obs_next')):
@@ -61,19 +63,19 @@ test_policy = my_random()
 
 # 电梯的状态元组是一个多状态的，无法对应于DQN
 state_shape = single.observation_dim
-action_shape = 8
+action_shape = 52
 
 Actornet = Net(state_shape=state_shape,action_shape = action_shape,hidden_sizes=[256,256,128,64,32])
-Criticnet = Net(state_shape=state_shape,action_shape = action_shape,hidden_sizes=[256,256,128,64,32])
+critic_net = Net(state_shape=state_shape,hidden_sizes=[256,256,128,64,32])
+Criticnet = Critic(preprocess_net=Criticnet,preprocess_net_output_dim=action_shape)
 ActorCriticnet = ActorCritic(Actornet,Criticnet)
 
 optim = torch.optim.SGD(ActorCriticnet.parameters(),lr = 0.003)
-test_policy2 = Policy.PPOPolicy(actor=Actornet,critic=Criticnet,dist_fn=torch.distributions.Categorical
+test_policy2 = Policy.PPOPolicy(actor=Actornet,critic=Criticnet,dist_fn=ele_dict
                                 ,optim=optim)
-# env = DummyVectorEnv([lambda : gym.make('liftsim-v0') for i in range(5)])
 buffer = VectorReplayBuffer(total_size=10000,buffer_num=2)
-collector = Collector(policy=test_policy2,env=env,buffer=buffer,preprocess_fn=process_fn)
+collector = Collector(policy=test_policy2,env=env,buffer=buffer,preprocess_fn=preprocess_fn)
 
-collector.collect(n_step=2)
+collector.collect(n_step=10000)
 
 # 2步的话就2个？

@@ -125,6 +125,10 @@ class LiftSim(gym.Env):
                     300 * given_up_persons) * 1.0e-4
         info = {'time_consume': time_consume, 'energy_consume': energy_consume, 'given_up_persons': given_up_persons}
 
+        # worldtime =self._mansion.config.world_time
+        rawtime = self._mansion.config.raw_time
+        # print('world:',worldtime,'rawtime',rawtime)
+
         return state_transform(self._mansion.state), reward, False,False, info
 
     def reset(self,seed = None,options =None):

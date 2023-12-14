@@ -40,27 +40,30 @@ class CustomGenerator(PersonGeneratorBase):
         #           prob that passengers going from 1 to 1 floor, prob that passengers going from 1 to 2 floor, prob of 1 to 3, prob of 1 to 4...
         self._pedestrian_flow = np.load(self._data_file)    # (288, 112)
         # data format: time, floor_in_flow, floor_out_flow
-        # np.savetxt('my_array.txt', self._pedestrian_flow, delimiter=',', fmt='%.12f')
-
+        np.savetxt('my_array.txt', self._pedestrian_flow, delimiter=',', fmt='%.12f')
+        #数据长度 = 第一维的长度，楼层数量=0 0
         self._data_len = self._pedestrian_flow.shape[0]
+
         self._floor_number = int(self._pedestrian_flow[0][0])   # 10 in this case
         self._pedestrian_flow = self._pedestrian_flow[:, 1:]
+        #截取掉了第一列
         self._in_density = np.zeros([self._data_len, self._floor_number], dtype = 'float32')
         # probability for passengers going from one floor to another floor
         self._out_prob = np.zeros([self._data_len, self._floor_number, self._floor_number], dtype = 'float32')
-
+        # 去除一列后的列数 111 = 1 + 10 * 11
         assert (self._pedestrian_flow.shape[1] == 1 + self._floor_number * (self._floor_number + 1)), \
             "The column of the dataset file do not match the mansion, %d and %d"%(
                 self._pedestrian_flow.shape[1], 1 + self._floor_number * (self._floor_number + 1)
                 )
         assert (self._pedestrian_flow[-1][0] < 86400), \
             "The time of the day must < 86400 sec"
+        # 第二列表示时间 也就是说每一行都对应一个时间发生事件
         assert (self._pedestrian_flow[0][0] <= 0.0), \
             "The start time of the day must <= 0.0 sec"
-
+        # start time 从一个小于等于0的开始
         print ("waiting for loading the environment data")
-        for i in range(self._data_len):
-            if(i < self._data_len - 1):
+        for i in range(self._data_len):# 遍历每一行
+            if(i < self._data_len - 1):#最后一行以外 这里计算了时间差，是下一行的时间-这一行的时间
                 tmp_val = self._pedestrian_flow[i + 1][0] - self._pedestrian_flow[i][0]
             else:
                 tmp_val = 86400 - self._pedestrian_flow[i][0]
@@ -68,7 +71,7 @@ class CustomGenerator(PersonGeneratorBase):
             for j in range(self._floor_number):
                 self._in_density[i][j] = 1.0 / tmp_val * self._pedestrian_flow[i][j * (self._floor_number + 1) + 1]
                 self._out_prob[i][j] =  self._pedestrian_flow[i][(j * (self._floor_number + 1) + 2) : ((j + 1) * (self._floor_number + 1) + 1)]
-            
+        #
         self._cur_time_index = 0
         self._cur_id = 0
 
