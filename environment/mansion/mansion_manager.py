@@ -107,6 +107,7 @@ class MansionManager(object):
                 downward_req.append(idx + 1)
         for i in range(self._elevator_number):
             state_queue.append(self._elevators[i].state)
+        #往电梯状态里加
         return MansionState(state_queue, upward_req, downward_req)
 
     def run_mansion(self, actions):

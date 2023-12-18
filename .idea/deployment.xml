@@ -5,7 +5,7 @@
       <paths name="lift">
         <serverdata>
           <mappings>
-            <mapping deploy="/metagym/liftsim" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

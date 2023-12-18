@@ -15,16 +15,39 @@ from typing import Optional,Any,Union,Dict
 import gymnasium as gym
 from metagym import liftsim
 from metagym.liftsim.environment.mansion.utils import state_transform,action_to_list,flatten_state
-from metagym.liftsim.dist_fn.dict_fn import ele_dict
+from metagym.liftsim.Distributions.Distribution_cate import EleCategorical
 import numpy as np
 import torch
 import torch.nn as nn
 
+from tianshou.utils import TensorboardLogger
+from torch.utils.tensorboard import SummaryWriter
+
+
 single = gym.make('liftsim-v0')
 
 env_nums = 2
-env = DummyVectorEnv([lambda : gym.make('liftsim-v0') for i in range(1)])
+env = DummyVectorEnv([lambda : gym.make('liftsim-v0') for i in range(env_nums)])
 
+
+def stat_parameters(model):
+    weights = []
+    biases = []
+    for name, param in model.named_parameters():
+        if 'weight' in name:
+            weights.append(param.data.cpu().numpy())
+        else:
+            biases.append(param.data.cpu().numpy())
+    fl_wei = []
+    fl_bia = []
+    for i in weights:
+        fl_wei.append(np.ravel(i))
+    for i in biases:
+        fl_bia.append(np.ravel(i))
+    weights = np.concatenate(fl_wei)
+    biases = np.concatenate(fl_bia)
+
+    return np.mean(weights), np.std(weights), np.mean(biases), np.std(biases)
 
 class my_random(Policy.BasePolicy):
     """A random agent used in multi-agent learning.
@@ -65,17 +88,43 @@ test_policy = my_random()
 state_shape = single.observation_dim
 action_shape = 52
 
-Actornet = Net(state_shape=state_shape,action_shape = action_shape,hidden_sizes=[256,256,128,64,32])
-critic_net = Net(state_shape=state_shape,hidden_sizes=[256,256,128,64,32])
-Criticnet = Critic(preprocess_net=Criticnet,preprocess_net_output_dim=action_shape)
-ActorCriticnet = ActorCritic(Actornet,Criticnet)
+Actornet = Net(state_shape=state_shape,action_shape = 64,hidden_sizes=[256,128,64],device='cuda:0').to('cuda:0')
+critic_net = Net(state_shape=state_shape,action_shape=32,hidden_sizes=[256,128,64],device='cuda:0').to('cuda:0')
+actor = Actor(Actornet,action_shape=52,softmax_output=False,preprocess_net_output_dim=64,device='cuda:0').to('cuda:0')
+critic = Critic(preprocess_net=critic_net,preprocess_net_output_dim=32,device='cuda:0').to('cuda:0')
+ActorCriticnet = ActorCritic(actor,critic)
 
-optim = torch.optim.SGD(ActorCriticnet.parameters(),lr = 0.003)
-test_policy2 = Policy.PPOPolicy(actor=Actornet,critic=Criticnet,dist_fn=ele_dict
-                                ,optim=optim)
+
+
+
+
+optim = torch.optim.SGD(ActorCriticnet.parameters(),lr = 0.001)
+test_policy2 = Policy.PPOPolicy(actor=actor,critic=critic,dist_fn=EleCategorical
+                                ,optim=optim).to('cuda:0')
 buffer = VectorReplayBuffer(total_size=10000,buffer_num=2)
-collector = Collector(policy=test_policy2,env=env,buffer=buffer,preprocess_fn=preprocess_fn)
+train_collector = Collector(policy=test_policy2,env=env,buffer=buffer,preprocess_fn=preprocess_fn)
+test_collector = Collector(policy=test_policy2,env=env,buffer=VectorReplayBuffer(total_size=1000,buffer_num=2),preprocess_fn=preprocess_fn)
 
-collector.collect(n_step=10000)
+writer = SummaryWriter('tsboard')
+# writer.add_text("args")
 
+
+def train_fn(num_epoch: int, step_idx: int):
+    mean_w, std_w, mean_b, std_b = stat_parameters(actor)
+    writer.add_scalars('actor_params', {
+        'mean_w': mean_w,
+        'std_w': std_w,
+        'mean_b': mean_b,
+        'std_b': std_b
+    },num_epoch)
+
+
+logger = TensorboardLogger(writer)
+
+trainner = ts.trainer.OnpolicyTrainer(
+    policy=test_policy2,train_collector=train_collector,test_collector=test_collector,max_epoch=10,repeat_per_collect=2,
+    batch_size=128,step_per_collect=512,episode_per_test=1,step_per_epoch=512,logger=logger,train_fn=train_fn
+)
+
+result = trainner.run()
 # 2步的话就2个？

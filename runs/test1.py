@@ -17,8 +17,10 @@ import numpy as np
 #
 
 # print(batch_spaces.contains(new_dict))
-#
-test = torch.tensor([[1,2,3],[4,5,6]])
-test2 = torch.tensor([[4,5,6],[7,8,9]])
 
-print(torch.cat([test,test2]).flatten())
+
+# print(torch.cat([test,test2]).flatten())
+
+ex = np.array([[1,2,3],[4,5,6]],dtype=np.float32)
+ex /=10
+print(ex)

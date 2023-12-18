@@ -219,9 +219,9 @@ def state_transform(mansion_state):
     Upwards = np.zeros(Max_floor)
     Downwards = np.zeros(Max_floor)
     for i in RequiringUpwardFloors:
-        Upwards[i-1] = 1
+        Upwards [i-1] = 1
     for i in RequiringDownwardFloors:
-        Downwards[i-1] = 1
+        Downwards [i-1] = 1
     dict_list = []
     for elevator_num in range(len(ElevatorStates)):
         targets = np.zeros(Max_floor,dtype=np.int8)
@@ -238,6 +238,7 @@ def state_transform(mansion_state):
         dict_list[elevator_num]['LoadWeight'] = np.array([dict_list[elevator_num]['LoadWeight']],dtype=np.float32)
         dict_list[elevator_num]['Floor'] = np.int8(dict_list[elevator_num]['Floor'])
         dict_list[elevator_num]['DispatchTargetDirection'] = np.int8(dict_list[elevator_num]['DispatchTargetDirection'])
+
 
     ElevatorStates = {key: np.stack([d[key] for d in dict_list]) for key in dict_list[0].keys()}
     return {"elevator_states": ElevatorStates,
@@ -261,7 +262,7 @@ def flatten_state(state):
     elevator_states = state["elevator_states"]
     upward_requests = state["upward_requests"]
     downward_requests = state["downward_requests"]
-
+    # print(elevator_states)
     # 遍历每个电梯的状态,flatten并拼接
     flatten_elts = []
     for key, value in elevator_states.items():

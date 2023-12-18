@@ -88,7 +88,8 @@ class LiftSim(gym.Env):
         "CurrentDispatchTarget": Discrete(self._config.number_of_floors + 1),# 1 7
         "DispatchTargetDirection": Discrete(start=-1,n=3),#1 8
         "LoadWeight": Box(low=0.0, high=self._config.maximum_capacity, shape=(1,)),# 1 9
-        "MaximumLoad": Box(low=self._config.maximum_capacity, high=self._config.maximum_capacity, shape=(1,)),# 1 10
+        #最大载重是1600,这个规范化？
+        "MaximumLoad": Box(low=0.0, high=self._config.maximum_capacity, shape=(1,)),# 1 10
         "ReservedTargetFloors": MultiBinary(self._config.number_of_floors),# floors_num
         "OverloadedAlarm": Box(low=0.0, high=2.0, shape=(1,)),# 1 11
         "DoorIsOpening": Discrete(2),# 1 12
@@ -123,13 +124,18 @@ class LiftSim(gym.Env):
         time_consume, energy_consume, given_up_persons = self._mansion.run_mansion(action_tuple)
         reward = - (time_consume + 5e-4 * energy_consume +
                     300 * given_up_persons) * 1.0e-4
+
+        # reward = reward*1000
         info = {'time_consume': time_consume, 'energy_consume': energy_consume, 'given_up_persons': given_up_persons}
 
         # worldtime =self._mansion.config.world_time
         rawtime = self._mansion.config.raw_time
         # print('world:',worldtime,'rawtime',rawtime)
+        truncated = False
+        if rawtime >= 1000:
+            truncated = True
 
-        return state_transform(self._mansion.state), reward, False,False, info
+        return state_transform(self._mansion.state), reward, False,truncated, info
 
     def reset(self,seed = None,options =None):
         self.seed(seed)
