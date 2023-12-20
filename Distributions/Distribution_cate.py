@@ -8,7 +8,7 @@ def logit_actions(logit):
         action_parts = []
         for i in range(4):
             target_logit = logit[j:j + 1, i * (k + 3):i * (k + 3) + k]
-            print(target_logit)
+            # print(target_logit)
             target_dist = nn.functional.softmax(target_logit, dim=-1)
             target_action = torch.distributions.Categorical(target_dist).sample()
 

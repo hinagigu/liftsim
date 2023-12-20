@@ -213,6 +213,8 @@ def velocity_planner(start_v, target_x, max_acc, max_spd, dt):
 def state_transform(mansion_state):
     ElevatorStates = mansion_state.ElevatorStates
     Max_floor = ElevatorStates[0].MaximumFloor
+    Max_speed = ElevatorStates[0].MaximumSpeed
+    Max_load = ElevatorStates[0].MaximumLoad
     RequiringUpwardFloors = mansion_state.RequiringUpwardFloors
     RequiringDownwardFloors = mansion_state.RequiringDownwardFloors
     # ElevatorStates = np.array(ElevatorStates)
@@ -229,14 +231,21 @@ def state_transform(mansion_state):
             targets[target-1] = 1
         dict_list.append(ElevatorStates[elevator_num]._asdict())
         dict_list[elevator_num]['ReservedTargetFloors'] = targets
-        dict_list[elevator_num]['MaximumFloor'] = np.int8(dict_list[elevator_num]['MaximumFloor'])
-        dict_list[elevator_num]['MaximumLoad'] = np.array([dict_list[elevator_num]['MaximumLoad']],dtype=np.float32)
+        # dict_list[elevator_num]['MaximumFloor'] = np.int8(dict_list[elevator_num]['MaximumFloor'])
+        # dict_list[elevator_num]['MaximumLoad'] = np.array([dict_list[elevator_num]['MaximumLoad']],dtype=np.float32)
         dict_list[elevator_num]['DoorState'] = np.array([dict_list[elevator_num]['DoorState']],dtype=np.float32)
-        dict_list[elevator_num]['MaximumSpeed'] = np.array([dict_list[elevator_num]['MaximumSpeed']],dtype=np.float32)
+        # dict_list[elevator_num]['MaximumSpeed'] = np.array([dict_list[elevator_num]['MaximumSpeed']],dtype=np.float32)
         dict_list[elevator_num]['OverloadedAlarm'] = np.array([dict_list[elevator_num]['OverloadedAlarm']],dtype=np.float32)
         dict_list[elevator_num]['Velocity'] = np.array([dict_list[elevator_num]['Velocity']],dtype=np.float32)
+        dict_list[elevator_num]['Velocity'] /= Max_speed
         dict_list[elevator_num]['LoadWeight'] = np.array([dict_list[elevator_num]['LoadWeight']],dtype=np.float32)
-        dict_list[elevator_num]['Floor'] = np.int8(dict_list[elevator_num]['Floor'])
+        dict_list[elevator_num]['LoadWeight'] /= Max_load
+        dict_list[elevator_num]['Floor'] = np.float32(dict_list[elevator_num]['Floor'])
+        dict_list[elevator_num]['Floor'] /= Max_floor
+        dict_list[elevator_num].pop('MaximumFloor')
+        dict_list[elevator_num].pop('MaximumLoad')
+        dict_list[elevator_num].pop('MaximumSpeed')
+
         dict_list[elevator_num]['DispatchTargetDirection'] = np.int8(dict_list[elevator_num]['DispatchTargetDirection'])
 
 

@@ -82,7 +82,7 @@ def preprocess_fn(**kwargs)->Batch:
 test_policy = my_random()
 
 # 电梯的状态元组是一个多状态的，无法对应于DQN
-state_shape = 112
+state_shape = 100
 action_shape = 52
 
 Actornet = Net(state_shape=state_shape,action_shape = 64,hidden_sizes=[256,128,64],device='cuda:0').to('cuda:0')
@@ -101,7 +101,6 @@ test_collector = Collector(policy=test_policy2,env=env,buffer=VectorReplayBuffer
 writer = SummaryWriter('tsboard')
 # writer.add_text("args")
 
-
 def train_fn(num_epoch: int, step_idx: int):
     mean_w, std_w, mean_b, std_b = stat_parameters(actor)
     writer.add_scalars('actor_params', {
@@ -114,9 +113,13 @@ def train_fn(num_epoch: int, step_idx: int):
 
 logger = TensorboardLogger(writer)
 
+# trainner = ts.trainer.OnpolicyTrainer(
+#     policy=test_policy2,train_collector=train_collector,test_collector=test_collector,max_epoch=10,repeat_per_collect=2,
+#     batch_size=128,step_per_collect=512,episode_per_test=1,step_per_epoch=1000,logger=logger,train_fn=train_fn
+# )
 trainner = ts.trainer.OnpolicyTrainer(
-    policy=test_policy2,train_collector=train_collector,test_collector=test_collector,max_epoch=10,repeat_per_collect=2,
-    batch_size=128,step_per_collect=512,episode_per_test=1,step_per_epoch=512,logger=logger,train_fn=train_fn
+    policy=test_policy2,train_collector=train_collector,test_collector=test_collector,max_epoch=10,repeat_per_collect=1,
+    batch_size=1024,episode_per_test=1,episode_per_collect=1,logger=logger,train_fn=train_fn,step_per_epoch=100
 )
 
 result = trainner.run()

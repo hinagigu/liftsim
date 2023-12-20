@@ -80,16 +80,12 @@ class LiftSim(gym.Env):
         # self.observation_space = None
         self.elevator_space = Dict({
         "Floor": Discrete(start=1,n=self._config.number_of_floors),# 1
-        "MaximumFloor": Discrete(start=1,n=self._config.number_of_floors),# 1 2
         "Velocity": Box(low=-self._config.maximum_speed, high=self._config.maximum_speed, shape=(1,)),# 1 3
-        "MaximumSpeed": Box(low=self._config.maximum_speed, high=self._config.maximum_speed, shape=(1,)),# 1 4
         "Direction": Discrete(start=-1,n=3),# 1 5
         "DoorState": Box(low=0.0, high=1.0, shape=(1,)),#door open rate 1 6
         "CurrentDispatchTarget": Discrete(self._config.number_of_floors + 1),# 1 7
         "DispatchTargetDirection": Discrete(start=-1,n=3),#1 8
         "LoadWeight": Box(low=0.0, high=self._config.maximum_capacity, shape=(1,)),# 1 9
-        #最大载重是1600,这个规范化？
-        "MaximumLoad": Box(low=0.0, high=self._config.maximum_capacity, shape=(1,)),# 1 10
         "ReservedTargetFloors": MultiBinary(self._config.number_of_floors),# floors_num
         "OverloadedAlarm": Box(low=0.0, high=2.0, shape=(1,)),# 1 11
         "DoorIsOpening": Discrete(2),# 1 12
@@ -132,9 +128,11 @@ class LiftSim(gym.Env):
         rawtime = self._mansion.config.raw_time
         # print('world:',worldtime,'rawtime',rawtime)
         truncated = False
+        # if rawtime >= 86100:
+        #     truncated = True
         if rawtime >= 1000:
+            print('env rawtime:', rawtime)
             truncated = True
-
         return state_transform(self._mansion.state), reward, False,truncated, info
 
     def reset(self,seed = None,options =None):

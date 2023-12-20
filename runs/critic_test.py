@@ -6,7 +6,7 @@ import torch.nn as nn
 class criticnet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.linear1 = nn.Linear(112,128)
+        self.linear1 = nn.Linear(100,128)
         self.relu = nn.ReLU()
         self.linear2 = nn.Linear(128,64)
         self.linear3 = nn.Linear(64,32)
