@@ -17,9 +17,9 @@
 #
 import sys
 import time
-from metagym.liftsim.environment.mansion.utils import SimulatedTime
-from metagym.liftsim.environment.mansion.utils import formulate_simulation_time, simulation_time_to_str, raw_time_to_str
-from metagym.liftsim.environment.mansion.utils import args_to_string
+from environment.mansion.utils import SimulatedTime
+from environment.mansion.utils import formulate_simulation_time, simulation_time_to_str, raw_time_to_str
+from environment.mansion.utils import args_to_string
 
 
 class MansionConfig(object):

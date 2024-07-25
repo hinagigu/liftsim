@@ -16,13 +16,13 @@ import sys
 import random
 from collections import deque
 
-from metagym.liftsim.environment.mansion.elevator import Elevator
-from metagym.liftsim.environment.mansion.utils import PersonType
-from metagym.liftsim.environment.mansion.utils import MansionAttribute, MansionState, ElevatorState
-from metagym.liftsim.environment.mansion.utils import EPSILON, ENTERING_TIME
-from metagym.liftsim.environment.mansion.mansion_config import MansionConfig
-from metagym.liftsim.environment.mansion.person_generators.generator_proxy import PersonGenerator
-from metagym.liftsim.environment.mansion.person_generators.person_generator import PersonGeneratorBase
+from environment.mansion.elevator import Elevator
+from environment.mansion.utils import PersonType
+from environment.mansion.utils import MansionAttribute, MansionState, ElevatorState
+from environment.mansion.utils import EPSILON, ENTERING_TIME
+from environment.mansion.mansion_config import MansionConfig
+from environment.mansion.person_generators.generator_proxy import PersonGenerator
+from environment.mansion.person_generators.person_generator import PersonGeneratorBase
 
 
 class MansionManager(object):

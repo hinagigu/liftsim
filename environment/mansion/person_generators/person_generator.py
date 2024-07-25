@@ -18,8 +18,8 @@
 
 import sys
 import random
-from metagym.liftsim.environment.mansion.utils import PersonType
-from metagym.liftsim.environment.mansion.mansion_config import MansionConfig
+from environment.mansion.utils import PersonType
+from environment.mansion.mansion_config import MansionConfig
 
 
 class PersonGeneratorBase(object):

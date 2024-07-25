@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metagym.liftsim.environment.mansion.person_generators.generator_proxy import *
-from metagym.liftsim.environment.mansion.person_generators.custom_generator import * 
-from metagym.liftsim.environment.mansion.person_generators.person_generator import *
-from metagym.liftsim.environment.mansion.person_generators.uniform_generator import *
+from environment.mansion.person_generators.generator_proxy import *
+from environment.mansion.person_generators.custom_generator import * 
+from environment.mansion.person_generators.person_generator import *
+from environment.mansion.person_generators.uniform_generator import *

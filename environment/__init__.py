@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metagym.liftsim.environment.env import *
-from metagym.liftsim.environment.animation import *
-from metagym.liftsim.environment.mansion import *
+from environment.env import *
+from environment.animation import *
+from environment.mansion import *

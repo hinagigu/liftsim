@@ -15,8 +15,8 @@
 import sys
 import random
 import queue
-from metagym.liftsim.environment.mansion.utils import ElevatorState, ElevatorAction, MansionState
-from metagym.liftsim.environment.mansion.utils import EPSILON, HUGE
+from environment.mansion.utils import ElevatorState, ElevatorAction, MansionState
+from environment.mansion.utils import EPSILON, HUGE
 
 
 class Rule_dispatcher():

@@ -14,7 +14,7 @@ import tianshou.policy as Policy
 from typing import Optional,Any,Union,Dict
 import gymnasium as gym
 from metagym import liftsim
-from metagym.liftsim.environment.mansion.utils import state_transform,action_to_list,flatten_state
+from environment.mansion.utils import state_transform,action_to_list,flatten_state
 import numpy as np
 import torch
 import torch.nn as nn

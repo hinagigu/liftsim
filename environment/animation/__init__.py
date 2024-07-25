@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metagym.liftsim.environment.animation.rendering import *
-from metagym.liftsim.environment.animation.resources import *
+from environment.animation.rendering import *
+from environment.animation.resources import *

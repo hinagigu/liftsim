@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import sys
-from metagym.liftsim.environment.mansion.utils import PersonType, ElevatorState, ElevatorAction
-from metagym.liftsim.environment.mansion.utils import EPSILON, GRAVITY
-from metagym.liftsim.environment.mansion.utils import velocity_planner
-from metagym.liftsim.environment.mansion.mansion_config import MansionConfig
+from environment.mansion.utils import PersonType, ElevatorState, ElevatorAction
+from environment.mansion.utils import EPSILON, GRAVITY
+from environment.mansion.utils import velocity_planner
+from environment.mansion.mansion_config import MansionConfig
 from copy import deepcopy
 
 

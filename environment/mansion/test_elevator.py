@@ -15,13 +15,13 @@
 """
 Unit test class
 """
-from metagym.liftsim.environment.mansion.person_generators.uniform_generator import UniformPersonGenerator
-from metagym.liftsim.environment.mansion import person_generators
-from metagym.liftsim.environment.mansion.person_generators import uniform_generator
-from metagym.liftsim.environment.mansion.utils import PersonType, MansionState, ElevatorState, ElevatorAction
-from metagym.liftsim.environment.mansion.elevator import Elevator
-from metagym.liftsim.environment.mansion.mansion_manager import MansionManager
-from metagym.liftsim.environment.mansion.mansion_config import MansionConfig
+from environment.mansion.person_generators.uniform_generator import UniformPersonGenerator
+from environment.mansion import person_generators
+from environment.mansion.person_generators import uniform_generator
+from environment.mansion.utils import PersonType, MansionState, ElevatorState, ElevatorAction
+from environment.mansion.elevator import Elevator
+from environment.mansion.mansion_manager import MansionManager
+from environment.mansion.mansion_config import MansionConfig
 import sys
 import unittest
 import mock

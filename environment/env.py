@@ -11,22 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import numpy as np
 import torch
-from metagym.liftsim.environment.mansion.person_generators.generator_proxy import set_seed
-from metagym.liftsim.environment.mansion.person_generators.generator_proxy import PersonGenerator
-from metagym.liftsim.environment.mansion.mansion_config import MansionConfig
-from metagym.liftsim.environment.mansion.mansion_manager import MansionManager
-from metagym.liftsim.environment.mansion.utils import ElevatorAction,state_transform
+import numpy as np
+from environment.mansion.person_generators.generator_proxy import set_seed
+from environment.mansion.person_generators.generator_proxy import PersonGenerator
+from environment.mansion.mansion_config import MansionConfig
+from environment.mansion.mansion_manager import MansionManager
+from environment.mansion.utils import ElevatorAction,state_transform
 
 NoDisplay = False
 try:
-    from metagym.liftsim.environment.animation.rendering import Render
+    from environment.animation.rendering import Render
 except Exception as e:
     NoDisplay = True
-
-import gym
+import gymnasium as gym
 import argparse
 import configparser
 import random

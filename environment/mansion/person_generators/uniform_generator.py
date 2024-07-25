@@ -18,10 +18,10 @@
 
 import sys
 import random
-from metagym.liftsim.environment.mansion.utils import EPSILON
-from metagym.liftsim.environment.mansion.utils import PersonType
-from metagym.liftsim.environment.mansion.mansion_config import MansionConfig
-from metagym.liftsim.environment.mansion.person_generators.person_generator import PersonGeneratorBase
+from environment.mansion.utils import EPSILON
+from environment.mansion.utils import PersonType
+from environment.mansion.mansion_config import MansionConfig
+from environment.mansion.person_generators.person_generator import PersonGeneratorBase
 
 
 class UniformPersonGenerator(PersonGeneratorBase):

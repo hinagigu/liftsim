@@ -20,9 +20,9 @@ import sys
 import random
 import numpy as np
 from six import integer_types
-from metagym.liftsim.environment.mansion.utils import PersonType
-from metagym.liftsim.environment.mansion.person_generators.uniform_generator import UniformPersonGenerator
-from metagym.liftsim.environment.mansion.person_generators.custom_generator import CustomGenerator
+from environment.mansion.utils import PersonType
+from environment.mansion.person_generators.uniform_generator import UniformPersonGenerator
+from environment.mansion.person_generators.custom_generator import CustomGenerator
 
 
 def PersonGenerator(gen_type):

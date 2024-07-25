@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metagym.liftsim.environment.mansion.person_generators import *
-from metagym.liftsim.environment.mansion.elevator import *
-from metagym.liftsim.environment.mansion.mansion_config import *
-from metagym.liftsim.environment.mansion.mansion_manager import *
-from metagym.liftsim.environment.mansion.utils import *
+from environment.mansion.person_generators import *
+from environment.mansion.elevator import *
+from environment.mansion.mansion_config import *
+from environment.mansion.mansion_manager import *
+from environment.mansion.utils import *

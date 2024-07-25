@@ -1,10 +1,14 @@
-import gym
+# import gym
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import gymnasium
-import metagym.liftsim
 import numpy as np
-import torch
-from metagym.liftsim.environment.env import LiftSim
-from metagym.liftsim.environment.mansion.utils import state_transform,action_to_list,flatten_state
+# import torch
+# from environment.env import LiftSim
+from environment.mansion.utils import state_transform,action_to_list,flatten_state
 from gymnasium.wrappers.compatibility import EnvCompatibility
 # env = LiftSim()
 env = gymnasium.make('liftsim-v0')

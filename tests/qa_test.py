@@ -25,11 +25,11 @@ import time
 import copy
 import traceback
 
-from metagym.liftsim.environment.env import LiftSim
-from metagym.liftsim.environment.mansion.person_generators.generator_proxy import PersonGenerator
-from metagym.liftsim.environment.mansion.mansion_config import MansionConfig
-from metagym.liftsim.environment.mansion.utils import ElevatorState, MansionState, ElevatorAction
-from metagym.liftsim.environment.mansion.mansion_manager import MansionManager
+from environment.env import LiftSim
+from environment.mansion.person_generators.generator_proxy import PersonGenerator
+from environment.mansion.mansion_config import MansionConfig
+from environment.mansion.utils import ElevatorState, MansionState, ElevatorAction
+from environment.mansion.mansion_manager import MansionManager
 from rule_benchmark.dispatcher import Rule_dispatcher
 
 

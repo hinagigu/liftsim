@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metagym.liftsim.environment.mansion.utils import MansionAttribute, MansionState
-from metagym.liftsim.environment.env import LiftSim
+from environment.mansion.utils import MansionAttribute, MansionState
+from environment.env import LiftSim
 
 env = LiftSim()
 env.seed(1998)
