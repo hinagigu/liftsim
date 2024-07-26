@@ -21,7 +21,8 @@ from environment.mansion.utils import ElevatorAction,state_transform
 
 NoDisplay = False
 try:
-    from environment.animation.rendering import Render
+    # from environment.animation.rendering import Render
+    from environment.animation.matplrender import Render
 except Exception as e:
     NoDisplay = True
 import gymnasium as gym
@@ -132,14 +133,21 @@ class LiftSim(gym.Env):
         return state_transform(self._mansion.state),info
 
     def render(self, mode="human"):
-        if (mode != "human"):
-            raise NotImplementedError("Only support human mode currently")
-        if self.viewer is None:
-            if NoDisplay:
-                raise Exception('[Error] Cannot connect to display screen. \
-                    \n\rYou are running the render() function on a manchine that does not have a display screen')
-            self.viewer = Render(self._mansion)
-        self.viewer.on_draw()
+        # if (mode != "human"):
+        #     raise NotImplementedError("Only support human mode currently")
+        # if self.viewer is None:
+        #     if NoDisplay:
+        #         raise Exception('[Error] Cannot connect to display screen. \
+        #             \n\rYou are running the render() function on a manchine that does not have a display screen')
+        #     self.viewer = Render(self._mansion)
+        
+        # self.viewer.on_draw()
+        if mode == "human":
+            if self.viewer is None:
+                self.viewer = Render(self._mansion)
+            self.viewer.on_draw()
+        else:
+            raise NotImplementedError("Only support human and mat modes currently")
 
     def close(self):
         pass
