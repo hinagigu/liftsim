@@ -119,8 +119,10 @@ class MansionManager(object):
           State, Cumulative Wating Time for Person, Energy Consumption of Elevator
         """
         self._config.step()  # update the current time
-
-        person_list = self._person_generator.generate_person()
+        if self._person_generator.type == 1:
+            person_list = self._person_generator.generate_person(self._config.raw_time)
+        else:
+            person_list = self._person_generator.generate_person()
         tmp_generated_person = len(person_list)
         for person in person_list:
             if(person.SourceFloor < person.TargetFloor):

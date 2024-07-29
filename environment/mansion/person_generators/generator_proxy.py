@@ -23,6 +23,7 @@ from six import integer_types
 from environment.mansion.utils import PersonType
 from environment.mansion.person_generators.uniform_generator import UniformPersonGenerator
 from environment.mansion.person_generators.custom_generator import CustomGenerator
+from environment.mansion.person_generators.dynamic_generator import DynamicPersonGenerator
 
 
 def PersonGenerator(gen_type):
@@ -30,6 +31,8 @@ def PersonGenerator(gen_type):
         return UniformPersonGenerator()
     elif(gen_type == "CUSTOM"):
         return CustomGenerator()
+    elif(gen_type == "DYNAMIC"):
+        return DynamicPersonGenerator()
     else:
         raise RuntimeError("No such generator type: %s" % gen_type)
 

@@ -148,7 +148,7 @@ class Render:
         self.frame.append(new_frame)
         self.image_count += 1
 
-        if self.image_count == 50:
+        if self.image_count == 1000:
             self.frame[0].save('./animation_buffer/animation{}.gif'.format(str(self.gif_count)),
                                format='GIF', append_images=self.frame[1:],
                                save_all=True, duration=10, loop=0)

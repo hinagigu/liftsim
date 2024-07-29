@@ -29,7 +29,7 @@ class PersonGeneratorBase(object):
     """
 
     def __init__(self):
-        pass
+        self.type = 0
 
     def configure(self, configuration):
         pass
